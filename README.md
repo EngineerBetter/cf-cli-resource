@@ -822,6 +822,50 @@ Push a new app or sync changes to an existing app
         key2: value2
 ```
 
+#### v3-push
+
+:warning: This use the beta v7 version of the cf-cli and may not work as expected :warning:
+
+Push a new app or sync changes to an existing app using the v3 rolling strategy
+
+*NOTE*: A manifest can be used to specify values for required parameters. Any parameters specified will override manifest values.
+
+* `org`: *Optional.* The organization to target (required if not set in the source config)
+* `space`: *Optional.* The space to target (required if not set in the source config)
+* `app_name`: *Required.* The name of the application
+* `buildpack`: *Optional.* Custom buildpack by name (e.g. my-buildpack) or Git URL (e.g. 'https://github.com/cloudfoundry/java-buildpack.git') or Git URL with a branch or tag (e.g. 'https://github.com/cloudfoundry/java-buildpack.git#v3.3.0' for 'v3.3.0' tag). To use built-in buildpacks only, specify 'default' or 'null'
+* `startup_command`: *Optional.* Startup command, set to null to reset to default start command
+* `docker_image`: *Optional.* Docker-image to be used (e.g. user/docker-image-name)
+* `docker_username`: *Optional.* This is used as the username to authenticate against a protected docker registry
+* `docker_password`: *Optional.* This should be the users password when authenticating against a protected docker registry
+* `manifest`: *Optional.* Path to manifest
+* `instances`: *Optional.* Number of instances
+* `disk_quota`: *Optional.* Disk limit (e.g. 256M, 1024M, 1G)
+* `memory`: *Optional.* Memory limit (e.g. 256M, 1024M, 1G)
+* `no_start`: *Optional.* Do not start an app after pushing. Defaults to `false`.
+* `path`: *Optional.* Path to app directory or to a zip file of the contents of the app directory
+* `stack`: *Optional.* Stack to use (a stack is a pre-built file system, including an operating system, that can run apps)
+* `vars`: *Optional.* Map of variables to pass to manifest
+* `vars_files`: *Optional.* List of variables files to pass to manifest
+* `staging_timeout`: *Optional.* Max wait time for buildpack staging, in minutes
+* `startup_timeout`: *Optional.* Max wait time for app instance startup, in minutes
+
+```yml
+  - put: cf-push
+    resource: cf-env
+    params:
+      command: push
+      app_name: myapp-ui
+      memory: 1G
+      path: path/to/myapp-*.jar
+      buildpack: java_buildpack
+      manifest: path/to/manifest.yml
+      vars:
+        instances: 3
+      vars_files:
+      - path/to/vars.yml
+```
+
 #### zero-downtime-push
 
 Push a single app using the [autopilot plugin](https://github.com/contraband/autopilot).
