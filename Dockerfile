@@ -3,6 +3,8 @@ FROM alpine:3.8
 ADD assets/ /opt/resource/
 ADD itest/ /opt/itest/
 
+ARG PIVNET_TOKEN
+
 # Install uuidgen
 RUN apk add --no-cache ca-certificates curl bash jq util-linux wget
 
