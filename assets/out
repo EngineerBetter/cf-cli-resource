@@ -394,7 +394,7 @@ echo "$params" | jq -c '.commands[]' | while read -r options; do
     unset CF_STAGING_TIMEOUT
     unset CF_STARTUP_TIMEOUT
     [ -n "$docker_password" ]   && unset CF_DOCKER_PASSWORD
-  elif [ "create-autoscaler-rule" = "$command" ]; then
+  elif [ "create-autoscaling-rule" = "$command" ]; then
     app_name=$(echo $options | jq -r '.app_name //empty')
     rule_type=$(echo $options | jq -r '.rule_type //empty')
     min_threshold=$(echo $options | jq -r '.min_threshold //empty')
