@@ -442,6 +442,16 @@ echo "$params" | jq -c '.commands[]' | while read -r options; do
     cf_target "$org" "$space"
 
     cf update-autoscaling-limits "${args[@]}"
+  elif [ "delete-autoscaling-rules" = "$command" ]; then
+    app_name=$(echo $options | jq -r '.app_name //empty')
+
+    args=()
+    [ -n "$app_name" ]        && args+=("$app_name")
+
+    logger::info "Executing $(logger::highlight "$command"): $app_name"
+    cf_target "$org" "$space"
+
+    cf delete-autoscaling-rules "${args[@]}" --force
   elif [ "zero-downtime-push" = "$command" ]; then
     manifest=$(echo $options | jq -r '.manifest //empty')
     path=$(echo $options | jq -r '.path //empty')
