@@ -394,6 +394,29 @@ echo "$params" | jq -c '.commands[]' | while read -r options; do
     unset CF_STAGING_TIMEOUT
     unset CF_STARTUP_TIMEOUT
     [ -n "$docker_password" ]   && unset CF_DOCKER_PASSWORD
+  elif [ "create-autoscaler-rule" = "$command" ]; then
+    app_name=$(echo $options | jq -r '.app_name //empty')
+    rule_type=$(echo $options | jq -r '.rule_type //empty')
+    min_threshold=$(echo $options | jq -r '.min_threshold //empty')
+    max_threshold=$(echo $options | jq -r '.max_threshold //empty')
+    subtype=$(echo $options | jq -r '.subtype //empty')
+    metric=$(echo $options | jq -r '.metric //empty')
+    comparison_metric=$(echo $options | jq -r '.comparison_metric //empty')
+
+    args=()
+    [ -n "$app_name" ]        && args+=("$app_name")
+    [ -n "$rule_type" ]        && args+=("$rule_type")
+    [ -n "$min_threshold" ]        && args+=("$min_threshold")
+    [ -n "$max_threshold" ]        && args+=("$max_threshold")
+    [ -n "$subtype" ]        && args+=(--subtype "$subtype")
+    [ -n "$metric" ]        && args+=(--metric "$metric")
+    [ -n "$comparison_metric" ]        && args+=(-comparison-metric "$comparison_metric")
+
+    logger::info "Executing $(logger::highlight "$command"): $app_name"
+    cf_target "$org" "$space"
+
+    cf create-autoscaling-rule "${args[@]}"
+
   elif [ "zero-downtime-push" = "$command" ]; then
     manifest=$(echo $options | jq -r '.manifest //empty')
     path=$(echo $options | jq -r '.path //empty')
