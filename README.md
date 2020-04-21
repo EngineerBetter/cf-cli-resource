@@ -866,6 +866,23 @@ Push a new app or sync changes to an existing app using the v3 rolling strategy
       - path/to/vars.yml
 ```
 
+#### cancel-zero-downtime-push
+
+Cancel a potentially hanging zero-downtime push. Will error if there is no deployment in progress, so use a `try` step in your pipeline.
+
+* `org`: *Optional.* The organization to target (required if not set in the source config)
+* `space`: *Optional.* The space to target (required if not set in the source config)
+* `app_name`: *Required.* The name of the application
+
+```yml
+  - try:
+      put: cancel-zero-downtime-push
+      resource: cf-env
+      params:
+        command: push
+        app_name: myapp-ui
+```
+
 #### zero-downtime-push
 
 Push a single app using the [autopilot plugin](https://github.com/contraband/autopilot).
