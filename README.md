@@ -854,7 +854,7 @@ Push a new app or sync changes to an existing app using the v3 rolling strategy
   - put: cf-push
     resource: cf-env
     params:
-      command: push
+      command: v3-push
       app_name: myapp-ui
       memory: 1G
       path: path/to/myapp-*.jar
