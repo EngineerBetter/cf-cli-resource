@@ -879,7 +879,7 @@ Cancel a potentially hanging zero-downtime push. Will error if there is no deplo
       put: cancel-zero-downtime-push
       resource: cf-env
       params:
-        command: push
+        command: cancel-zero-downtime-push
         app_name: myapp-ui
 ```
 
