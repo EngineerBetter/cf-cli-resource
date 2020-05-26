@@ -866,6 +866,30 @@ Push a new app or sync changes to an existing app using the v3 rolling strategy
       - path/to/vars.yml
 ```
 
+#### cf7-create-route
+
+:warning: This use the beta v7 version of the cf-cli and may not work as expected :warning:
+
+Use CF CLI v7's `create-route` command, which does not take `space` as an argument and fixes [this bug in CF CLI v6](https://github.com/cloudfoundry/cloud_controller_ng/issues/1274).
+
+*NOTE*: A manifest can be used to specify values for required parameters. Any parameters specified will override manifest values.
+
+* `org`: *Optional.* The organization to target (required if not set in the source config)
+* `space`: *Optional.* The space to target (required if not set in the source config)
+* `domain`: *Required.* Domain for the route
+* `hostname`: *Optional.* Hostname for the route
+* `path`: *Optional.* Path for the route
+
+```yml
+  - put: cf7-create-route
+    resource: cf-env
+    params:
+      command: cf7-create-route
+      domain: engineerbetter.com
+      hostname: "*"
+      path: /api
+```
+
 #### cancel-zero-downtime-push
 
 Cancel a potentially hanging zero-downtime push. Will error if there is no deployment in progress, so use a `try` step in your pipeline.
